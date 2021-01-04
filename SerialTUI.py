@@ -204,12 +204,17 @@ def serial_read():
             data = ''
             while enable_serial_read:
                 bytes_ = serial_port.read()
-                if len(bytes_) == 0:
+                if len(bytes_) == 0 or ord(bytes_) == ord("\n"):
                     break
                 data += str(chr(ord(bytes_)))
+
+            # remove any carriage returns
+            data = data.replace('\r', '')
                         
+            # data = str(chr(ord(serial_port.read())))
             # Print to received area
-            print_received_data(data)
+            if data != '':
+                print_received_data(data)
              
 
 def print_received_data(data : str):
